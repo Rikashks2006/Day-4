@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sticky Title Example</title>
+  <title>Sticky Movie Titles</title>
   <style>
     * {
       margin: 0;
@@ -17,23 +17,37 @@
       overflow-x: hidden;
     }
 
-    .page {
-      min-height: 150vh; /* Ensure enough scroll room */
+    /* Site-Wide Sticky Page Title */
+    .site-title {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      background: #111;
       color: white;
+      font-size: 2.5rem;
+      font-weight: bold;
+      text-align: center;
+      padding: 20px;
+      z-index: 1000;
+      border-bottom: 3px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .page {
+      min-height: 150vh;
       background-size: cover;
       background-position: center;
+      color: white;
       position: relative;
-      padding: 0;
     }
 
     .sticky-title {
       position: sticky;
-      top: 0;
+      top: 80px; /* Push below the site-title */
       background: rgba(0, 0, 0, 0.8);
-      font-size: 3rem;
+      font-size: 2.5rem;
       font-weight: bold;
       padding: 20px;
-      z-index: 100;
+      z-index: 999;
       border-bottom: 2px solid rgba(255, 255, 255, 0.2);
     }
 
@@ -81,14 +95,22 @@
       background-image: url('https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1668021746i/63264815.jpg');
     }
 
+    .page3 {
+      background-image: url('https://disney.images.edge.bamgrid.com/ripcut-delivery/v2/variant/disney/7723a23e-c3f1-4824-a0b7-94cd2e4c5b14/compose?aspectRatio=1.78&format=webp&width=1200');
+    }
+
     @media (max-width: 600px) {
-      .sticky-title { font-size: 2rem; }
+      .site-title { font-size: 1.5rem; padding: 15px; }
+      .sticky-title { font-size: 1.8rem; }
       .description { font-size: 1rem; }
       .logo-fixed { width: 80px; }
     }
   </style>
 </head>
 <body>
+
+  <!-- Site-Wide Sticky Title -->
+  <div class="site-title">Sticky Movie Titles</div>
 
   <!-- Fixed Logo -->
   <img
@@ -97,7 +119,7 @@
     class="logo-fixed"
   />
 
-  <!-- Page 1 -->
+  <!-- Movie 1 -->
   <section class="page page1">
     <div class="sticky-title">Rise of the Phoenix</div>
     <div class="movie-content">
@@ -116,7 +138,7 @@
     </div>
   </section>
 
-  <!-- Page 2 -->
+  <!-- Movie 2 -->
   <section class="page page2">
     <div class="sticky-title">Shadows of Tomorrow</div>
     <div class="movie-content">
@@ -131,6 +153,25 @@
         “Shadows of Tomorrow” explores identity, rebellion, and what it means to be truly free in a digital age.
         <br><br>
         The future isn't written — it's hacked.
+      </div>
+    </div>
+  </section>
+
+  <!-- Movie 3 -->
+  <section class="page page3">
+    <div class="sticky-title">Neon Ronin</div>
+    <div class="movie-content">
+      <img
+        class="movie-image"
+        src="https://sm.ign.com/t/ign_in/review/j/jungle-cru/jungle-cruise-review_cnyt.1280.jpg"
+        alt="Cyber Samurai Scene"
+      />
+      <div class="description">
+        In the year 2149, a cybernetic samurai roams the neon-lit alleys of Neo-Tokyo, seeking vengeance for his fallen clan.
+        <br><br>
+        “Neon Ronin” is a visually stunning, blade-slicing techno-thriller blending tradition with transhumanism.
+        <br><br>
+        The code is honor. The weapon is silence.
       </div>
     </div>
   </section>
