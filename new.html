@@ -1,6 +1,156 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Meme Generator with Multiple Emojis</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      background: #f0f0f0;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #222;
+      margin-bottom: 20px;
+    }
+
+    .meme-form {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      display: inline-block;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+
+    .meme-form input,
+    .meme-form select,
+    .meme-form button {
+      margin: 6px;
+      padding: 10px;
+      font-size: 16px;
+    }
+
+    .emotions {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 10px 0;
+      flex-wrap: wrap;
+    }
+
+    .emotions label {
+      font-size: 18px;
+    }
+
+    canvas {
+      border: 2px solid #444;
+      background-color: white;
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
 <body>
-    <h1>
-        start
-    </h1>
+  <h1>Meme Generator 😂😡😢😲</h1>
+
+  <div class="meme-form">
+    <input type="file" id="imageInput" accept="image/*"><br>
+
+    <input type="text" id="topText" placeholder="Top Text">
+    <input type="number" id="topX" placeholder="Top X" style="width: 80px;">
+    <input type="number" id="topY" placeholder="Top Y" style="width: 80px;"><br>
+
+    <input type="text" id="bottomText" placeholder="Bottom Text">
+    <input type="number" id="bottomX" placeholder="Bottom X" style="width: 80px;">
+    <input type="number" id="bottomY" placeholder="Bottom Y" style="width: 80px;"><br>
+
+    <div class="emotions">
+      <label><input type="checkbox" value="😂"> 😂</label>
+      <label><input type="checkbox" value="😡"> 😡</label>
+      <label><input type="checkbox" value="😢"> 😢</label>
+      <label><input type="checkbox" value="😲"> 😲</label>
+      <label><input type="checkbox" value="😍"> 😍</label>
+      <label><input type="checkbox" value="😎"> 😎</label>
+    </div>
+
+    <button onclick="generateMeme()">Generate Image</button>
+    <button onclick="downloadMeme()">Download Meme</button>
+  </div>
+
+  <canvas id="memeCanvas" width="500" height="500"></canvas>
+
+  <script>
+    let currentImage = null;
+
+    function getSelectedEmojis() {
+      const checkboxes = document.querySelectorAll('.emotions input[type="checkbox"]:checked');
+      return Array.from(checkboxes).map(cb => cb.value).join(' ');
+    }
+
+    function generateMeme() {
+      const canvas = document.getElementById('memeCanvas');
+      const ctx = canvas.getContext('2d');
+
+      const topText = document.getElementById('topText').value;
+      const bottomText = document.getElementById('bottomText').value;
+      const topX = parseInt(document.getElementById('topX').value) || 50;
+      const topY = parseInt(document.getElementById('topY').value) || 50;
+      const bottomX = parseInt(document.getElementById('bottomX').value) || 50;
+      const bottomY = parseInt(document.getElementById('bottomY').value) || canvas.height - 20;
+
+      const emojis = getSelectedEmojis();
+
+      const file = document.getElementById('imageInput').files[0];
+      if (!file) {
+        alert("Please upload an image.");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const img = new Image();
+        img.onload = function() {
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(img, 0, 0);
+
+          ctx.font = 'bold 36px Impact, sans-serif';
+          ctx.fillStyle = 'white';
+          ctx.strokeStyle = 'black';
+          ctx.textAlign = 'center';
+          ctx.lineWidth = 2;
+
+          const topLine = ${emojis} ${topText.toUpperCase()} ${emojis};
+          const bottomLine = ${emojis} ${bottomText.toUpperCase()} ${emojis};
+
+          ctx.fillText(topLine, topX, topY);
+          ctx.strokeText(topLine, topX, topY);
+          ctx.fillText(bottomLine, bottomX, bottomY);
+          ctx.strokeText(bottomLine, bottomX, bottomY);
+          currentImage = true;
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+    function downloadMeme() {
+      if (!currentImage) {
+        alert("Please generate the image first.");
+        return;
+      }
+      const canvas = document.getElementById('memeCanvas');
+      const link = document.createElement('a');
+      link.download = 'meme.png';
+      link.href = canvas.toDataURL();
+      link.click();
+    }
+  </script>
 </body>
+</html>
